@@ -16,10 +16,13 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.senac.persistenciabanco.ui.theme.PersistenciaBancoTheme
+import com.senac.persistenciabanco.viewmodels.ProductViewModel
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
@@ -41,6 +44,10 @@ class MainActivity : ComponentActivity() {
 @ExperimentalMaterial3Api
 @Composable
 fun MyApp(){
+
+    val productViewModel : ProductViewModel = viewModel()
+    val state = productViewModel.uiState.collectAsState()
+
     Scaffold(
         topBar = {
             TopAppBar(title = { Text(text = "Room DataBase") })
@@ -54,9 +61,24 @@ fun MyApp(){
                 .padding(16.dp)
 
         ){
-            OutlinedTextField(value = "", onValueChange = {}, label = { Text(text = "Name")})
-            OutlinedTextField(value = "", onValueChange = {}, label = { Text(text = "Description")})
-            OutlinedTextField(value = "", onValueChange = {}, label = { Text(text = "Price")})
+            OutlinedTextField(
+                value = state.value.name,
+                onValueChange = {productViewModel.updateName(it)},
+                label = { Text(text = "Name")}
+            )
+
+            OutlinedTextField(
+                value = state.value.description,
+                onValueChange = {productViewModel.updateDescription(it)},
+                label = { Text(text = "Description")}
+            )
+
+            OutlinedTextField(
+                value = state.value.price.toString(),
+                onValueChange = {productViewModel.updatePrice(it.toDouble())},
+                label = { Text(text = "Price")}
+            )
+
             Button(onClick = { /*TODO*/ }) {
                 Text(text = "Save")
             }
