@@ -19,7 +19,7 @@ interface ProductDao {
     fun update(product: Product)
 
     @Upsert //insere ou altera depende se recebe o id ou nao
-    fun upsert(product: Product) : Long
+    suspend fun upsert(product: Product) : Long //suspend diz que pode ser executado fora da tread principal
 
     @Query("select * from product p order by p.name")
     fun getAll() : Flow<List<Product>> //flow monitora o banco e traz as alterações

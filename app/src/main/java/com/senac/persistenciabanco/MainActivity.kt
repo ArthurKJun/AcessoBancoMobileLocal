@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.LocalAbsoluteTonalElevation
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -18,11 +19,14 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.senac.persistenciabanco.db.AppDataBase
 import com.senac.persistenciabanco.ui.theme.PersistenciaBancoTheme
 import com.senac.persistenciabanco.viewmodels.ProductViewModel
+import com.senac.persistenciabanco.viewmodels.ProductViewModelFactory
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
@@ -45,7 +49,11 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MyApp(){
 
-    val productViewModel : ProductViewModel = viewModel()
+    val ctx = LocalContext.current
+    val db = AppDataBase.getDatabase(ctx)
+    val productViewModel : ProductViewModel = viewModel( //isso tem que fazer para cada view model que acessa o banco
+        factory = ProductViewModelFactory(db)
+    )
     val state = productViewModel.uiState.collectAsState()
 
     Scaffold(

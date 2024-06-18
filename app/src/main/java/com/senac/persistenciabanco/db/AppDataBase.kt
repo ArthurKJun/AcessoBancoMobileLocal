@@ -1,6 +1,7 @@
 package com.senac.persistenciabanco.db
 
 import android.app.Application
+import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -16,9 +17,9 @@ abstract class AppDataBase : RoomDatabase() {
     companion object {
         @Volatile
         private var INSTANCE: AppDataBase? = null
-        fun getDatabase(application: Application): AppDataBase = INSTANCE ?: synchronized(this) {
+        fun getDatabase(context : Context): AppDataBase = INSTANCE ?: synchronized(this) {
             val instance = Room.databaseBuilder(
-                application,
+                context,
                 AppDataBase::class.java,
                 "product-db"
             ).build()
