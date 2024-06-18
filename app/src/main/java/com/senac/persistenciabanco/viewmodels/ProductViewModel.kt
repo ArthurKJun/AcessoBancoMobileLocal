@@ -57,4 +57,15 @@ class ProductViewModel(val productDao : ProductDao) : ViewModel(){
         }
     }
 
+    fun saveNew() {
+        save()
+        new()
+    }
+
+    private fun new() {
+        _uiState.update {
+            it.copy(id = 0, name = "", description = "", price = 0.00)
+        }
+    }
+
 }

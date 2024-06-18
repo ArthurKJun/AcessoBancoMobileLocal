@@ -1,9 +1,11 @@
 package com.senac.persistenciabanco
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -87,9 +89,21 @@ fun MyApp(){
                 label = { Text(text = "Price")}
             )
 
-            Button(onClick = { /*TODO*/ }) {
-                Text(text = "Save")
+            Row {
+                Button(onClick = {
+                    productViewModel.save()
+                    Toast.makeText(ctx,"Product saved", Toast.LENGTH_SHORT).show()
+                }) {
+                    Text(text = "Save")
+                }
+                Button(onClick = {
+                    productViewModel.saveNew()
+                    Toast.makeText(ctx,"Product saved", Toast.LENGTH_SHORT).show()
+                }) {
+                    Text(text = "SaveNew")
+                }
             }
+
         }
     }
 }
